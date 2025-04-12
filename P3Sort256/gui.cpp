@@ -272,17 +272,17 @@ void gui::menuDrawing()
         
         if (ImGui::Button("Merge Sort")) {
             progressBuff = "";
-            algo.mergeSort(randomStrings, &progressBuff);
+           // algo.mergeSort(randomStrings, &progressBuff);
         }
 
         if (ImGui::Button("Quick Sort")) {
             progressBuff = "";
-            algo.quickSort( randomStrings);
+            //algo.quickSort( randomStrings);
         }
 
         if (ImGui::Button("Bubble Sort Debug only")) {
             progressBuff = "";
-            algo.bubbleSortWithPrint(randomStrings, &progressBuff);
+            //0lgo.bubbleSortWithPrint(randomStrings, &progressBuff);
         }
 
         ImGui::BeginChild("Sort Progress", ImVec2(0, 0), true, ImGuiWindowFlags_NoDecoration);

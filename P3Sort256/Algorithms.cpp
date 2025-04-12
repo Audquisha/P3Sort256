@@ -94,7 +94,7 @@ void Algorithms::mergeSort(int data[], int left, int right)
 }
 
 //code inspired from sorting lecture slides
-int partition(int data[], int low, int high) {
+int Algorithms::partition(int data[], int low, int high) {
     int mid = low + (high - low) / 2; //calculate middle index
 
     //calculate the median of threes for optimal quicksort
