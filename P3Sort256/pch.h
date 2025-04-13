@@ -1,10 +1,14 @@
 #pragma once
 
-
 //C Headers
 #include <vector>
 #include <string>
 #include <functional>
+#include <tuple>
+#include <sstream>
+#include <iomanip>
+#include <cstdint>
+#include <iostream>
 
 //ImGui
 #include <imgui/imgui.h>
@@ -14,13 +18,6 @@
 #include <Windows.h>
 #include "d3d11.h"
 #include "Algorithms.h"
-#pragma once
-
 
 //SHA256
 #include "HashAlgorithm.h"
-#include <tuple>
-#include <sstream>
-#include <iomanip>
-#include <cstdint>
-#include <iostream>

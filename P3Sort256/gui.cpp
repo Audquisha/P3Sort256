@@ -261,18 +261,30 @@ void gui::menuDrawing()
 	
         ImGui::Text("TITLECARD");
         Algorithms algo;
+		HashAlgorithm hashAlgo;
         //to be replaced with a global variable
-        std::vector<std::string> randomStrings = {
-      "A3f2P0zB9K", "B7y2G5kL3O", "D9J8M3iV4X", "F1nP4zV0Aq", "C2wD9G5rL0",
-      "H4uT3bK2Tq", "P0hC8zF9L1", "W9oL2F3P8V", "J1Z4K7bY9T", "R0uM8fV2Yd",
-      "T4B3N5kM1Q", "L6gP2H9uJ0", "V3zY5N4WqR", "Q1W7Z8pL3H", "S9X2B0kC1N",
-      "O4A6dZ5F2T", "I0Y8M4zK7W", "N2S5R8bP0C", "U9F1kL3J4X", "M6V2W8rD5T",
-      "O4A2dZ5F2T", "I058M4zK7W", "N215R8bP0C", "U9F15L3J4X", "M612W8rD5T"
+        std::vector<std::pair<std::string, std::string>> randomStrings = 
+        { //Names        //Passwords
+         {"A3f2P0zB9K", "fuckme1"},
+         {"D9J8M3iV4X", "fuckme2"},
+         {"C2wD9G5rL0", "fuckme3"},
+         {"P0hC8zF9L1", "fuckme4"},
+         {"J1Z4K7bY9T", "fuckme5"},
+         {"T4B3N5kM1Q", "fuckme6"},
+         {"V3zY5N4WqR", "fuckme7"},
+         {"S9X2B0kC1N", "fuckme8"},
+         {"O4A6dZ5F2T", "fuckme9"},
+         {"N2S5R8bP0C", "fuckme10"},
+         {"M6V2W8rD5T", "fuckme11"},
+         {"I058M4zK7W", "fuckme12"},
+         {"U9F15L3J4X", "fuckme13"},
         };
-        
+		//First we need to convert all given string to hashes and grab the key vector to sort the hashes
+		std::vector<int> key = hashAlgo.convertInputToHash(randomStrings);
+
         if (ImGui::Button("Merge Sort")) {
             progressBuff = "";
-           // algo.mergeSort(randomStrings, &progressBuff);
+            //algo.mergeSort(randomStrings, &progressBuff);
         }
 
         if (ImGui::Button("Quick Sort")) {
@@ -282,7 +294,7 @@ void gui::menuDrawing()
 
         if (ImGui::Button("Bubble Sort Debug only")) {
             progressBuff = "";
-            //0lgo.bubbleSortWithPrint(randomStrings, &progressBuff);
+            //algo.bubbleSortWithPrint(randomStrings, &progressBuff);
         }
 
         ImGui::BeginChild("Sort Progress", ImVec2(0, 0), true, ImGuiWindowFlags_NoDecoration);
