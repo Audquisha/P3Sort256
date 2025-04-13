@@ -31,7 +31,7 @@ private:
     }
 
 public:
-    static std::string hash(const std::string& input);
+    static void hash(std::string& input);
     std::vector<int> convertInputToHash(std::vector<std::pair<std::string, std::string>>& givenDataSet);
 };
 

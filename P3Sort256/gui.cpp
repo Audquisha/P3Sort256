@@ -279,9 +279,9 @@ void gui::menuDrawing()
          {"I058M4zK7W", "fuckme12"},
          {"U9F15L3J4X", "fuckme13"},
         };
-		//First we need to convert all given string to hashes and grab the key vector to sort the hashes
-		std::vector<int> key = hashAlgo.convertInputToHash(randomStrings);
-
+		// Converts string passwords to hashes by refrence and returns a random vector with #s from 0-31 in random assortment that map to each char
+		// ex. if we have a hashed password of abcdefghi and a key vector of {8,7,6,5,4,3,2,1,0} then the sorted password should end as ihgfedcba
+		std::vector<int> orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
         if (ImGui::Button("Merge Sort")) {
             progressBuff = "";
             //algo.mergeSort(randomStrings, &progressBuff);

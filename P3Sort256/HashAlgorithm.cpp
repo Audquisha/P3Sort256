@@ -1,13 +1,20 @@
 #include "HashAlgorithm.h"
 std::vector<int> HashAlgorithm::convertInputToHash(std::vector<std::pair<std::string, std::string>>& givenDataSet) {
+    // hashes each password inplace
     for (auto& nameAndPass : givenDataSet) {
-        std::string myHash = hash(nameAndPass.second);
-		std::cout << myHash << std::endl;
+        hash(nameAndPass.second);
     }
-    std::vector<int> banana;
-    return banana;
+    //generates random keys from 0-31 and places them in a vector
+    std::vector<int> orderOfKeys;
+	while(orderOfKeys.size() != 32) {
+        int key = rand() % 32;
+		if (std::find(orderOfKeys.begin(), orderOfKeys.end(), key) == orderOfKeys.end()) {
+			orderOfKeys.push_back(key);
+		}
+	}
+    return orderOfKeys;
 }
-std::string HashAlgorithm::hash(const std::string& input) {
+void HashAlgorithm::hash(std::string& input) {
 
     // To begin the algorithm you need the first 32 bits of the sqare roots of the first 8 prime numbers (one of the reasons everyones afraid of quantum is that this won't work anymore)
     uint32_t h0 = 0x6a09e667;
@@ -120,7 +127,7 @@ std::string HashAlgorithm::hash(const std::string& input) {
     ss << std::setw(8) << h5;
     ss << std::setw(8) << h6;
     ss << std::setw(8) << h7;
-    return ss.str();
+	input = ss.str();
 }
 
 

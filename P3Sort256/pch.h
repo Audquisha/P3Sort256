@@ -8,7 +8,9 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
+#include <unordered_map>
 
 //ImGui
 #include <imgui/imgui.h>
