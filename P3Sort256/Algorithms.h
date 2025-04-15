@@ -15,4 +15,8 @@ public:
 	int partition(std::vector<std::pair<int, char>>& arr, int low, int high);
 
 	void quickSort(std::vector<std::pair<int, char>>& arr, int low, int high);
+
+	void shellSort(std::vector<std::pair<int, char>>& arr);
+
+	void heapSort(std::vector<std::pair<int, char>>& arr);
 };

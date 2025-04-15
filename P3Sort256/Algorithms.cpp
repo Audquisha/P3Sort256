@@ -59,7 +59,7 @@ void Algorithms::merge(std::vector<std::pair<int, char>>& arr, int left, int mid
     }
 }
 
-//takes in an array of int, each int corresponds to the weight of the char as designated by the sha256 algorithm
+//mergesort complexity O(nlogn)
 void Algorithms::mergeSort(std::vector<std::pair<int, char>>& arr, int left, int right)
 {
        //printf("Quick Left %i Right %i\n", left, right);
@@ -76,8 +76,33 @@ void Algorithms::mergeSort(std::vector<std::pair<int, char>>& arr, int left, int
     }
 }
 
-//code inspired from sorting lecture slides
+//include option to select the partition
 int Algorithms::partition(std::vector<std::pair<int, char>>& arr, int low, int high) {
+    //if (option == 1) { //option 1: pivot is first element
+    //    int pivot = arr[high].first;
+    //}
+    //else if (option == 2) { //option 2: pivot is last element
+    //    int pivot = arr[low].first;
+    //}
+    //else if (option == 3) { //option 3: pivot is median of threes
+    //    int mid = (high + low) / 2;
+    //    int lowElement = arr[low].first;
+    //    int midElement = arr[mid].first;
+    //    int highElement = arr[high].first;
+    //    if ((lowElement <= midElement <= highElement) || (highElement <= midElement <= lowElement)) {
+    //        int pivot = midElement;
+    //    }
+    //    else if ((midElement <= lowElement <= highElement) || (highElement <= lowElement <= midElement)) {
+    //        int pivot = lowElement;
+    //    }
+    //    else {
+    //        int pivot = highElement;
+    //    }
+    //}
+    //else { //option 4: pivot is random element
+    //    srand(time(0));
+    //    int pivot = arr[rand() % arr.size()].first;
+    //}
     int pivot = arr[high].first;
     int i = low - 1;
     for (int j = low; j < high; j++) {
@@ -90,6 +115,7 @@ int Algorithms::partition(std::vector<std::pair<int, char>>& arr, int low, int h
     return i + 1;
 }
 
+//quicksort complexity O(nlogn)
 void Algorithms::quickSort(std::vector<std::pair<int, char>>& arr, int low, int high)
 {
  //   printf("Quick Low %i High %i\n", low, high);
@@ -97,5 +123,42 @@ void Algorithms::quickSort(std::vector<std::pair<int, char>>& arr, int low, int 
         int pivot = partition(arr, low, high);
         quickSort(arr, low, pivot - 1);
         quickSort(arr, pivot + 1, high);
+    }
+}
+
+//shellsort complexity between O(nlogn) and O(n^2)
+void Algorithms::shellSort(std::vector<std::pair<int, char>>& arr) {
+    int gap = arr.size() / 2;
+    while (gap > 0) {
+        for (int i = gap; i < arr.size(); i++) {
+            std::pair<int, char> temp = arr[i];
+            int j = i;
+            while (j >= gap && arr[j - gap].first > temp.first) {
+                arr[j] = arr[j - gap];
+                j -= gap;
+            }
+            arr[j] = temp;
+        }
+        gap /= 2;
+    }
+}
+
+//custom compare to create min priority queue
+struct compare {
+    bool operator()(const std::pair<int, char>& a, const std::pair<int, char>& b) {
+        return a.first > b.first;
+    }
+};
+
+//heapsort using priority queue for heap building, complexity O(nlogn)
+void Algorithms::heapSort(std::vector<std::pair<int, char>>& arr) {
+    std::priority_queue<std::pair<int, char>, std::vector<std::pair<int, char>>, compare> pq;
+    while (!arr.empty()) {
+        pq.push(arr.front());
+        arr.erase(arr.begin(), arr.begin() + 1);
+    }
+    while (!pq.empty()) {
+        arr.push_back(pq.top());
+        pq.pop();
     }
 }

@@ -14,6 +14,7 @@
 #include "random"
 #include <fstream>
 #include <time.h>
+#include <queue>
 
 //ImGui
 #include <imgui/imgui.h>
