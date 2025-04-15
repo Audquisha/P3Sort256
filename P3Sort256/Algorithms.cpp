@@ -153,10 +153,10 @@ struct compare {
 //heapsort using priority queue for heap building, complexity O(nlogn)
 void Algorithms::heapSort(std::vector<std::pair<int, char>>& arr) {
     std::priority_queue<std::pair<int, char>, std::vector<std::pair<int, char>>, compare> pq;
-    while (!arr.empty()) {
-        pq.push(arr.front());
-        arr.erase(arr.begin(), arr.begin() + 1);
+    for (auto e : arr) {
+        pq.push(e);
     }
+    arr.clear();
     while (!pq.empty()) {
         arr.push_back(pq.top());
         pq.pop();
