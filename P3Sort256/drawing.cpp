@@ -134,12 +134,10 @@ std::vector<std::pair<std::string, std::string>> randomStrings =
 };
 bool isHashed = false;
 bool isSorted = false;
-std::vector<std::pair<std::string, std::string>> lmao;
 std::string consoleOutput;
 
 void gui::menuDrawing()
 {
-    //to be replaced with a global variable
    
 
     Algorithms algo;
@@ -158,8 +156,9 @@ void gui::menuDrawing()
 
     ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration);
     {
+        ImGui::Text("SHA256 Implementation By Max Schwarz, Christian Taylor, Ryan Kratz");
        
-        ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * .3f + menuDimensions.x / 5+ 1.2*menuDimensions.x / 3, menuDimensions.y / 16));
+        ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * .3f + menuDimensions.x / 5+ 1.1*menuDimensions.x / 3, menuDimensions.y / 16));
         ImGui::BeginChild("#Console", ImVec2(menuDimensions.x / 3, 14 * menuDimensions.y / 16), true, ImGuiWindowFlags_NoDecoration);
         {
             ImGui::Text("%s", consoleOutput.c_str());
@@ -194,10 +193,7 @@ void gui::menuDrawing()
                 for (int i = 0; i < randomStrings.size(); i++) {
                     ImGui::Text("[%i] %s %s", i, randomStrings[i].first.c_str(), randomStrings[i].second.c_str());
                 }
-                ImGui::Text("LMAO STRING");
-                for (int i = 0; i < lmao.size(); i++) {
-                    ImGui::Text("[%i] %s %s", i, lmao[i].first.c_str(), lmao[i].second.c_str());
-                }
+                
             }
           
         }
@@ -227,8 +223,11 @@ void gui::menuDrawing()
 
             if (ImGui::Button("Hash Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
                 if (!isHashed) {
+                    clock_t tempTime = clock();
                     orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
-                    lmao = randomStrings;
+                    tempTime = clock() - tempTime;
+                    consoleOutput += "[+] Hashing Completed In " + std::to_string((float)tempTime/ CLOCKS_PER_SEC) + " Seconds!\n";
+
                     isHashed = true;
                     consoleOutput += "[+] Successfully Hashed!\n";
 
@@ -238,7 +237,11 @@ void gui::menuDrawing()
                 }
             }
             if (ImGui::Button("Write Data File", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+                clock_t tempTime = clock();
                 writeDataFile(randomStrings);
+                tempTime = clock() - tempTime;
+                consoleOutput += "[+] Data Written to File In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
                 consoleOutput += "[+] Data Written To File!\n";
 
             }
@@ -248,162 +251,90 @@ void gui::menuDrawing()
 
             }
             if (ImGui::Button("Merge Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
-                if (!isSorted) {
-                    progressBuff = "";
-                    std::vector<std::pair<int, char>> arr;
+                if (isHashed) {
+                    if (!isSorted) {
+                        clock_t tempTime = clock();
 
-                    for (int j = 0; j < randomStrings.size(); j++) {
-                        int i = 0;
-                        for (int k = 0; k < randomStrings[j].second.size(); k++) {
-                            arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+
+                        for (int j = 0; j < randomStrings.size(); j++) {
+                            std::vector<std::pair<int, char>> arr;
+
+                            int i = 0;
+                            for (int k = 0; k < randomStrings[j].second.size(); k++) {
+                                arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                            }
+                            algo.mergeSort(arr, 0, arr.size() - 1);
+                            std::string finished;
+                            for (int k = 0; k < arr.size(); k++) {
+                                finished += arr[k].second;
+                            }
+                            randomStrings[j].second = finished;
                         }
-                        algo.mergeSort(arr, 0, arr.size() - 1);
-                        std::string finished;
-                        for (int k = 0; k < arr.size(); k++) {
-                            finished += arr[k].second;
-                        }
-                        randomStrings[j].second = finished;
+                        isSorted = true;
+                        tempTime = clock() - tempTime;
+                        consoleOutput += "[+] Merge Sort Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
+                        consoleOutput += "[+] Successfully Sorted!\n";
+
                     }
-                    isSorted = true;
-                    consoleOutput += "[+] Successfully Sorted!\n";
+                    else {
+                        consoleOutput += "[!] Already Sorted!\n";
 
+                    }
                 }
                 else {
-                    consoleOutput += "[!] Already Sorted!\n";
+                    consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
 
                 }
+               
 
 
             }
             if (ImGui::Button("Quick Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
-                if (!isSorted) {
-                    progressBuff = "";
-                    std::vector<std::pair<int, char>> arr;
+                if (isHashed) {
 
-                    for (int j = 0; j < randomStrings.size(); j++) {
-                        int i = 0;
-                        for (int k = 0; k < randomStrings[j].second.size(); k++) {
-                            arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                    if (!isSorted) {
+                        clock_t tempTime = clock();
+
+                        progressBuff = "";
+
+                        for (int j = 0; j < randomStrings.size(); j++) {
+                            std::vector<std::pair<int, char>> arr;
+
+                            int i = 0;
+                            for (int k = 0; k < randomStrings[j].second.size(); k++) {
+                                arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                            }
+                            algo.quickSort(arr, 0, arr.size() - 1);
+                            std::string finished;
+                            for (int k = 0; k < arr.size(); k++) {
+                                finished += arr[k].second;
+                            }
+                            randomStrings[j].second = finished;
                         }
-                        algo.quickSort(arr, 0, arr.size() - 1);
-                        std::string finished;
-                        for (int k = 0; k < arr.size(); k++) {
-                            finished += arr[k].second;
-                        }
-                        randomStrings[j].second = finished;
+                        isSorted = true;
+                        tempTime = clock() - tempTime;
+                        consoleOutput += "[+] Quick Sort Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
+                        consoleOutput += "[+] Successfully Sorted!\n";
+
                     }
-                    isSorted = true;
-                    consoleOutput += "[+] Successfully Sorted!\n";
+                    else {
+                        consoleOutput += "[!] Already Sorted!\n";
 
+                    }
                 }
                 else {
-                    consoleOutput += "[!] Already Sorted!\n";
+                    consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
 
                 }
+
             }
 
         }
         ImGui::EndChild();
-        /*
-        ImGui::NewLine();
-        if (ImGui::Button("Hash")) {
-            if (!isHashed) {
-                orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
-                lmao = randomStrings;
-                isHashed = true;
-                consoleOutput += "[+] Successfully Hashed!\n";
-
-            }
-            else {
-                consoleOutput += "[!] Already Hashed!\n";
-            }
-        }
-        if (ImGui::Button("Write Data File", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
-            writeDataFile(randomStrings);
-            consoleOutput += "[+] Data Written To File!\n";
-
-        }
-        if (ImGui::Button("Write Keys File", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
-            writeKeyFile(orderOfKeys);
-            consoleOutput += "[+] Keys Written To File!\n";
-
-        }
-        if (ImGui::Button("Merge Sort")) {
-            if (!isSorted) {
-                progressBuff = "";
-                std::vector<std::pair<int, char>> arr;
-
-                for (int j = 0; j < randomStrings.size(); j++) {
-                    int i = 0;
-                    for (int k = 0; k < randomStrings[j].second.size(); k++) {
-                        arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
-                    }
-                    algo.mergeSort(arr, 0, arr.size() - 1);
-                    std::string finished;
-                    for (int k = 0; k < arr.size(); k++) {
-                        finished += arr[k].second;
-                    }
-                    randomStrings[j].second = finished;
-                }
-                isSorted = true;
-                consoleOutput += "[+] Successfully Sorted!\n";
-
-            }
-            else {
-                consoleOutput += "[!] Already Sorted!\n";
-
-            }
-
-           
-        }
 
        
-
-        if (ImGui::Button("Quick Sort")) {
-            if (!isSorted) {
-                progressBuff = "";
-                std::vector<std::pair<int, char>> arr;
-
-                for (int j = 0; j < randomStrings.size(); j++) {
-                    int i = 0;
-                    for (int k = 0; k < randomStrings[j].second.size(); k++) {
-                        arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
-                    }
-                    algo.quickSort(arr, 0, arr.size() - 1);
-                    std::string finished;
-                    for (int k = 0; k < arr.size(); k++) {
-                        finished += arr[k].second;
-                    }
-                    randomStrings[j].second = finished;
-                }
-                isSorted = true;
-                consoleOutput += "[+] Successfully Sorted!\n";
-
-            }
-            else {
-                consoleOutput += "[!] Already Sorted!\n";
-
-            }
-        }
-
-        if (ImGui::Button("Bubble Sort Debug only")) {
-            progressBuff = "";
-            std::vector<std::pair<int, char>> arr;
-
-            for (int j = 0; j < lmao.size(); j++) {
-                int i = 0;
-                for (int k = 0; k < lmao[j].second.size(); k++) {
-                    arr.push_back({ orderOfKeys[i++], lmao[j].second[k] });
-                }
-                algo.mergeSort(arr, 0, arr.size() - 1);
-                std::string finished;
-                for (int k = 0; k < arr.size(); k++) {
-                    finished += arr[k].second;
-                }
-                lmao[j].second = finished;
-            }
-        }
-        */
 
     }
     ImGui::End();

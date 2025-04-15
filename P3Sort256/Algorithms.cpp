@@ -62,7 +62,9 @@ void Algorithms::merge(std::vector<std::pair<int, char>>& arr, int left, int mid
 //takes in an array of int, each int corresponds to the weight of the char as designated by the sha256 algorithm
 void Algorithms::mergeSort(std::vector<std::pair<int, char>>& arr, int left, int right)
 {
-    ImGui::Text("Merge Sort Called!");
+       //printf("Quick Left %i Right %i\n", left, right);
+
+   // ImGui::Text("Merge Sort Called!");
     if (left < right) {
         //divide into two arrays at middle
         int mid = left + (right - left) / 2;
@@ -90,7 +92,7 @@ int Algorithms::partition(std::vector<std::pair<int, char>>& arr, int low, int h
 
 void Algorithms::quickSort(std::vector<std::pair<int, char>>& arr, int low, int high)
 {
-    ImGui::Text("Quick Sort Called!");
+ //   printf("Quick Low %i High %i\n", low, high);
     if (low < high) {
         int pivot = partition(arr, low, high);
         quickSort(arr, low, pivot - 1);
