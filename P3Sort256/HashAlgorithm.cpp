@@ -6,8 +6,8 @@ std::vector<int> HashAlgorithm::convertInputToHash(std::vector<std::pair<std::st
     }
     //generates random keys from 0-31 and places them in a vector
     std::vector<int> orderOfKeys;
-	while(orderOfKeys.size() != 32) {
-        int key = rand() % 32;
+	while(orderOfKeys.size() != 64) {
+        int key = rand() % 64;
 		if (std::find(orderOfKeys.begin(), orderOfKeys.end(), key) == orderOfKeys.end()) {
 			orderOfKeys.push_back(key);
 		}

@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <unordered_map>
+#include "random"
+#include <fstream>
 
 //ImGui
 #include <imgui/imgui.h>
@@ -23,3 +25,4 @@
 
 //SHA256
 #include "HashAlgorithm.h"
+#include "gui.h"

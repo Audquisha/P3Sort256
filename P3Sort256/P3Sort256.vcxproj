@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>C:\Users\ilove\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\max.schwarz\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>C:\Users\ilove\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\max.schwarz\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
+    <ClCompile Include="drawing.cpp" />
     <ClCompile Include="external\imgui\imgui.cpp" />
     <ClCompile Include="external\imgui\imgui_demo.cpp" />
     <ClCompile Include="external\imgui\imgui_draw.cpp" />

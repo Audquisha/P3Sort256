@@ -62,7 +62,7 @@ void gui::Render()
 
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE, wc.lpszClassName, L"ImGui", WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE, wc.lpszClassName, L"ImGui", WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN)/1.5, GetSystemMetrics(SM_CYSCREEN)/1.5, nullptr, nullptr, wc.hInstance, nullptr);
 
     SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 255, LWA_ALPHA);
   
@@ -240,69 +240,4 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
-}
-
-std::string progressBuff;
-void gui::menuDrawing()
-{
-
-		
-	auto style = ImGui::GetStyle();
-	ImFont* Font = ImGui::GetFont();
-
-	ImVec2 menuDimensions = ImVec2(600, 400);
-
-	ImGui::SetNextWindowSize(menuDimensions);
-
-  
-	ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration);
-	{
-
-	
-        ImGui::Text("TITLECARD");
-        Algorithms algo;
-		HashAlgorithm hashAlgo;
-        //to be replaced with a global variable
-        std::vector<std::pair<std::string, std::string>> randomStrings = 
-        { //Names        //Passwords
-         {"A3f2P0zB9K", "fuckme1"},
-         {"D9J8M3iV4X", "fuckme2"},
-         {"C2wD9G5rL0", "fuckme3"},
-         {"P0hC8zF9L1", "fuckme4"},
-         {"J1Z4K7bY9T", "fuckme5"},
-         {"T4B3N5kM1Q", "fuckme6"},
-         {"V3zY5N4WqR", "fuckme7"},
-         {"S9X2B0kC1N", "fuckme8"},
-         {"O4A6dZ5F2T", "fuckme9"},
-         {"N2S5R8bP0C", "fuckme10"},
-         {"M6V2W8rD5T", "fuckme11"},
-         {"I058M4zK7W", "fuckme12"},
-         {"U9F15L3J4X", "fuckme13"},
-        };
-		// Converts string passwords to hashes by refrence and returns a random vector with #s from 0-31 in random assortment that map to each char
-		// ex. if we have a hashed password of abcdefghi and a key vector of {8,7,6,5,4,3,2,1,0} then the sorted password should end as ihgfedcba
-		std::vector<int> orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
-        if (ImGui::Button("Merge Sort")) {
-            progressBuff = "";
-            //algo.mergeSort(randomStrings, &progressBuff);
-        }
-
-        if (ImGui::Button("Quick Sort")) {
-            progressBuff = "";
-            //algo.quickSort( randomStrings);
-        }
-
-        if (ImGui::Button("Bubble Sort Debug only")) {
-            progressBuff = "";
-            //algo.bubbleSortWithPrint(randomStrings, &progressBuff);
-        }
-
-        ImGui::BeginChild("Sort Progress", ImVec2(0, 0), true, ImGuiWindowFlags_NoDecoration);
-        {
-            ImGui::Text("%s", progressBuff.c_str());
-        }
-        ImGui::EndChild();
-       
-	}
-	ImGui::End();
 }
