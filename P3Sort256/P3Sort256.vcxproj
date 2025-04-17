@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>C:\Users\rakra\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\rakra\source\repos\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>C:\Users\max.schwarz\source\repos\Audquisha\P3Sort256\P3Sort256\external;$(ExternalIncludePath)</ExternalIncludePath>

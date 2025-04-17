@@ -117,20 +117,20 @@ std::vector<int> orderOfKeys;
 displayTab currProfile = keyOrder;
 std::vector<std::pair<std::string, std::string>> randomStrings =
 { //Names        //Passwords
- {"A3f2P0zB9K", "fuckme1"},
- {"D9J8M3iV4X", "fuckme2"},
- {"C2wD9G5rL0", "fuckme3"},
- {"P0hC8zF9L1", "fuckme4"},
- {"J1Z4K7bY9T", "fuckme5"},
- {"T4B3N5kM1Q", "fuckme6"},
- {"V3zY5N4WqR", "fuckme7"},
- {"S9X2B0kC1N", "fuckme8"},
- {"O4A6dZ5F2T", "fuckme9"},
- {"N2S5R8bP0C", "fuckme10"},
- {"M6V2W8rD5T", "fuckme11"},
- {"I058M4zK7W", "fuckme12"},
- {"U9F15L3J4X", "fuckme13"},
- {"D9F12L3J4X", "fuckme14"},
+ {"A3f2P0zB9K", "default1"},
+ {"D9J8M3iV4X", "default2"},
+ {"C2wD9G5rL0", "default3"},
+ {"P0hC8zF9L1", "default4"},
+ {"J1Z4K7bY9T", "default5"},
+ {"T4B3N5kM1Q", "default6"},
+ {"V3zY5N4WqR", "default7"},
+ {"S9X2B0kC1N", "default8"},
+ {"O4A6dZ5F2T", "default9"},
+ {"N2S5R8bP0C", "default10"},
+ {"M6V2W8rD5T", "default11"},
+ {"I058M4zK7W", "default12"},
+ {"U9F15L3J4X", "default13"},
+ {"D9F12L3J4X", "default14"},
 };
 bool isHashed = false;
 bool isSorted = false;
@@ -200,9 +200,9 @@ void gui::menuDrawing()
         ImGui::EndChild();
 
         ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * .2f, menuDimensions.y / 16));
-        ImGui::BeginChild("#Data", ImVec2(menuDimensions.x / 5, 9.5 * menuDimensions.y / 16), true, ImGuiWindowFlags_NoDecoration);
+        ImGui::BeginChild("#Data", ImVec2(menuDimensions.x / 5, 14 * menuDimensions.y / 16), true, ImGuiWindowFlags_NoDecoration);
         {
-            if (ImGui::Button("Randomly Generate Data", ImVec2(.9*menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16) )){
+            if (ImGui::Button("Randomly Generate Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
                 //Random Generate Data Function
                 randomStrings = dataGeneration();
                 consoleOutput += "[+] Data of Size " + std::to_string(randomStrings.size()) + " Generated Succesfully!\n";
@@ -211,8 +211,8 @@ void gui::menuDrawing()
                 isSorted = false;
 
             }
-            
-            if (ImGui::Button("Import Data", ImVec2(.9*menuDimensions.x / 5, .4 * 3 *menuDimensions.y / 16))) {
+
+            if (ImGui::Button("Import Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
                 //Add Random Generate Data Function
                 randomStrings = readDataFile();
                 consoleOutput += "[+] Data of Size " + std::to_string(randomStrings.size()) + " Imported Succesfully!\n";
@@ -226,7 +226,7 @@ void gui::menuDrawing()
                     clock_t tempTime = clock();
                     orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
                     tempTime = clock() - tempTime;
-                    consoleOutput += "[+] Hashing Completed In " + std::to_string((float)tempTime/ CLOCKS_PER_SEC) + " Seconds!\n";
+                    consoleOutput += "[+] Hashing Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
 
                     isHashed = true;
                     consoleOutput += "[+] Successfully Hashed!\n";
@@ -286,7 +286,7 @@ void gui::menuDrawing()
                     consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
 
                 }
-               
+
 
 
             }
@@ -329,6 +329,120 @@ void gui::menuDrawing()
 
                 }
 
+            }
+            if (ImGui::Button("Shell Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+                if (isHashed) {
+
+                    if (!isSorted) {
+                        clock_t tempTime = clock();
+
+
+                        for (int j = 0; j < randomStrings.size(); j++) {
+                            std::vector<std::pair<int, char>> arr;
+
+                            int i = 0;
+                            for (int k = 0; k < randomStrings[j].second.size(); k++) {
+                                arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                            }
+                            algo.shellSort(arr);
+                            std::string finished;
+                            for (int k = 0; k < arr.size(); k++) {
+                                finished += arr[k].second;
+                            }
+                            randomStrings[j].second = finished;
+                        }
+                        isSorted = true;
+                        tempTime = clock() - tempTime;
+                        consoleOutput += "[+] Shell Sort Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
+                        consoleOutput += "[+] Successfully Sorted!\n";
+
+                    }
+                    else {
+                        consoleOutput += "[!] Already Sorted!\n";
+
+                    }
+                }
+                else {
+                    consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
+
+                }
+            }
+            if (ImGui::Button("Heap Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+                if (isHashed) {
+
+                    if (!isSorted) {
+                        clock_t tempTime = clock();
+
+
+                        for (int j = 0; j < randomStrings.size(); j++) {
+                            std::vector<std::pair<int, char>> arr;
+
+                            int i = 0;
+                            for (int k = 0; k < randomStrings[j].second.size(); k++) {
+                                arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                            }
+                            algo.heapSort(arr);
+                            std::string finished;
+                            for (int k = 0; k < arr.size(); k++) {
+                                finished += arr[k].second;
+                            }
+                            randomStrings[j].second = finished;
+                        }
+                        isSorted = true;
+                        tempTime = clock() - tempTime;
+                        consoleOutput += "[+] Heap Sort Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
+                        consoleOutput += "[+] Successfully Sorted!\n";
+
+                    }
+                    else {
+                        consoleOutput += "[!] Already Sorted!\n";
+
+                    }
+                }
+                else {
+                    consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
+
+                }
+            }
+            if (ImGui::Button("Radix Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+                if (isHashed) {
+
+                    if (!isSorted) {
+                        clock_t tempTime = clock();
+
+
+                        for (int j = 0; j < randomStrings.size(); j++) {
+                            std::vector<std::pair<int, char>> arr;
+
+                            int i = 0;
+                            for (int k = 0; k < randomStrings[j].second.size(); k++) {
+                                arr.push_back({ orderOfKeys[i++], randomStrings[j].second[k] });
+                            }
+                            algo.radixSort(arr);
+                            std::string finished;
+                            for (int k = 0; k < arr.size(); k++) {
+                                finished += arr[k].second;
+                            }
+                            randomStrings[j].second = finished;
+                        }
+                        isSorted = true;
+                        tempTime = clock() - tempTime;
+                        consoleOutput += "[+] Radix Sort Completed In " + std::to_string((float)tempTime / CLOCKS_PER_SEC) + " Seconds!\n";
+
+                        consoleOutput += "[+] Successfully Sorted!\n";
+
+                    }
+                    else {
+                        consoleOutput += "[!] Already Sorted!\n";
+
+                    }
+                }
+                else {
+                    consoleOutput += "[!] Must Be Hashed Before Being Sorted!\n";
+
+                }
             }
 
         }

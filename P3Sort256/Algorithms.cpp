@@ -76,33 +76,24 @@ void Algorithms::mergeSort(std::vector<std::pair<int, char>>& arr, int left, int
     }
 }
 
-//include option to select the partition
+//partition selected using median of threes
 int Algorithms::partition(std::vector<std::pair<int, char>>& arr, int low, int high) {
-    //if (option == 1) { //option 1: pivot is first element
-    //    int pivot = arr[high].first;
-    //}
-    //else if (option == 2) { //option 2: pivot is last element
-    //    int pivot = arr[low].first;
-    //}
-    //else if (option == 3) { //option 3: pivot is median of threes
-    //    int mid = (high + low) / 2;
-    //    int lowElement = arr[low].first;
-    //    int midElement = arr[mid].first;
-    //    int highElement = arr[high].first;
-    //    if ((lowElement <= midElement <= highElement) || (highElement <= midElement <= lowElement)) {
-    //        int pivot = midElement;
-    //    }
-    //    else if ((midElement <= lowElement <= highElement) || (highElement <= lowElement <= midElement)) {
-    //        int pivot = lowElement;
-    //    }
-    //    else {
-    //        int pivot = highElement;
-    //    }
-    //}
-    //else { //option 4: pivot is random element
-    //    srand(time(0));
-    //    int pivot = arr[rand() % arr.size()].first;
-    //}
+    //find median of three
+    int mid = (high + low) / 2;
+    int lowElement = arr[low].first;
+    int midElement = arr[mid].first;
+    int highElement = arr[high].first;
+    int pivotIndex = high;
+    if ((lowElement <= midElement && midElement <= highElement) ||
+        (highElement <= midElement && midElement <= lowElement)) {
+        pivotIndex = mid;
+    }
+    else if ((midElement <= lowElement && lowElement <= highElement) ||
+             (highElement <= lowElement && lowElement <= midElement)) {
+        pivotIndex = low;
+    }
+    std::swap(arr[pivotIndex], arr[high]);
+    //performs partition
     int pivot = arr[high].first;
     int i = low - 1;
     for (int j = low; j < high; j++) {
@@ -160,5 +151,37 @@ void Algorithms::heapSort(std::vector<std::pair<int, char>>& arr) {
     while (!pq.empty()) {
         arr.push_back(pq.top());
         pq.pop();
+    }
+}
+
+//countingSort used for the implementation of radixSort
+//only numbers 0 through 9 are accounted for, since it only examines one digit at a time
+void Algorithms::countingSort(std::vector<std::pair<int, char>>& arr, int exp) {
+    std::vector<std::pair<int, char>> temp(arr.size());
+    int count[10] = { 0 }; //only examining digits 0-9
+    //count frequency of each digit
+    for (int i = 0; i < arr.size(); i++) {
+        count[(arr[i].first / exp) % 10]++;
+    }
+    //count[i] contains position of digit
+    for (int i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+    //temp vector is the output
+    for (int i = arr.size() - 1; i >= 0; i--) {
+        temp[count[(arr[i].first / exp) % 10] - 1] = arr[i];
+        count[(arr[i].first / exp) % 10]--;
+    }
+    //update arr to be temp
+    for (int i = 0; i < arr.size(); i++) {
+        arr[i] = temp[i];
+    }
+}
+
+//radixSort implemented knowing the max number is 63
+void Algorithms::radixSort(std::vector<std::pair<int, char>>& arr) {
+    int max = 63;
+    for (int exp = 1; max / exp > 0; exp *= 10) { //call countingSort for 1s and 10s places
+        countingSort(arr, exp);
     }
 }

@@ -19,4 +19,8 @@ public:
 	void shellSort(std::vector<std::pair<int, char>>& arr);
 
 	void heapSort(std::vector<std::pair<int, char>>& arr);
+
+	void countingSort(std::vector<std::pair<int, char>>& arr, int exp);
+
+	void radixSort(std::vector<std::pair<int, char>>& arr);
 };
