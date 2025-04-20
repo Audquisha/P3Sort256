@@ -115,23 +115,7 @@ enum displayTab : uint8_t {
 std::string progressBuff;
 std::vector<int> orderOfKeys;
 displayTab currProfile = keyOrder;
-std::vector<std::pair<std::string, std::string>> randomStrings =
-{ //Names        //Passwords
- {"A3f2P0zB9K", "default1"},
- {"D9J8M3iV4X", "default2"},
- {"C2wD9G5rL0", "default3"},
- {"P0hC8zF9L1", "default4"},
- {"J1Z4K7bY9T", "default5"},
- {"T4B3N5kM1Q", "default6"},
- {"V3zY5N4WqR", "default7"},
- {"S9X2B0kC1N", "default8"},
- {"O4A6dZ5F2T", "default9"},
- {"N2S5R8bP0C", "default10"},
- {"M6V2W8rD5T", "default11"},
- {"I058M4zK7W", "default12"},
- {"U9F15L3J4X", "default13"},
- {"D9F12L3J4X", "default14"},
-};
+std::vector<std::pair<std::string, std::string>> randomStrings;
 bool isHashed = false;
 bool isSorted = false;
 std::string consoleOutput;
@@ -148,7 +132,7 @@ void gui::menuDrawing()
     auto style = ImGui::GetStyle();
     ImFont* Font = ImGui::GetFont();
 
-    ImVec2 menuDimensions = ImVec2(GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+    ImVec2 menuDimensions = ImVec2(GetSystemMetrics(SM_CXSCREEN)/1.1, GetSystemMetrics(SM_CYSCREEN)/1.1);
 
 
     ImGui::SetNextWindowSize(menuDimensions);
@@ -165,28 +149,29 @@ void gui::menuDrawing()
         }
         ImGui::EndChild();
 
-        // Converts string passwords to hashes by refrence and returns a random vector with #s from 0-31 in random assortment that map to each char
-        // ex. if we have a hashed password of abcdefghi and a key vector of {8,7,6,5,4,3,2,1,0} then the sorted password should end as ihgfedcba
-       // std::vector<int> orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
         ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * .3f + menuDimensions.x / 5, menuDimensions.y / 16));
 
-      //  ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * 3.8f, menuDimensions.y / 16));
         ImGui::BeginChild("#Strings", ImVec2(menuDimensions.x / 3, 14 * menuDimensions.y / 16), true, ImGuiWindowFlags_NoDecoration);
         {
             float xPos = ImGui::GetCursorPosX();
             if (ImGui::Button("Key Order", ImVec2(.45* menuDimensions.x / 3, menuDimensions.y / 16))) {
+                if (orderOfKeys.size() == 0) {
+                    consoleOutput += "[!] No Keys Found, Hash Data!\n";
+                }
                 currProfile = keyOrder;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(xPos+ .5 * menuDimensions.x / 3);
 
             if (ImGui::Button("String Input", ImVec2(.45 * menuDimensions.x / 3, menuDimensions.y / 16))) {
+                if (randomStrings.size() == 0) {
+                    consoleOutput += "[!] No Names And Passwords Found, Generate/Import Data!\n";
+                }
                 currProfile = stringInput;
             }
             if (currProfile == keyOrder) {
                 for (int i = 0; i < orderOfKeys.size(); i++) {
                     ImGui::Text("[%i] %i", i, orderOfKeys[i]);
-
                 }
             }
             else if (currProfile == stringInput) {
@@ -202,7 +187,10 @@ void gui::menuDrawing()
         ImGui::SetCursorPos(ImVec2(menuDimensions.x / 5 * .2f, menuDimensions.y / 16));
         ImGui::BeginChild("#Data", ImVec2(menuDimensions.x / 5, 14 * menuDimensions.y / 16), true, ImGuiWindowFlags_NoDecoration);
         {
-            if (ImGui::Button("Randomly Generate Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+			if (ImGui::Button("Exit Program", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
+			    exit(0);
+			}
+            if (ImGui::Button("Randomly Generate Data", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 //Random Generate Data Function
                 randomStrings = dataGeneration();
                 consoleOutput += "[+] Data of Size " + std::to_string(randomStrings.size()) + " Generated Succesfully!\n";
@@ -212,7 +200,7 @@ void gui::menuDrawing()
 
             }
 
-            if (ImGui::Button("Import Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Import Data", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 //Add Random Generate Data Function
                 randomStrings = readDataFile();
                 consoleOutput += "[+] Data of Size " + std::to_string(randomStrings.size()) + " Imported Succesfully!\n";
@@ -221,7 +209,7 @@ void gui::menuDrawing()
                 isSorted = false;
             }
 
-            if (ImGui::Button("Hash Data", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Hash Data", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (!isHashed) {
                     clock_t tempTime = clock();
                     orderOfKeys = hashAlgo.convertInputToHash(randomStrings);
@@ -236,7 +224,7 @@ void gui::menuDrawing()
                     consoleOutput += "[!] Already Hashed!\n";
                 }
             }
-            if (ImGui::Button("Write Data File", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Write Data File", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 clock_t tempTime = clock();
                 writeDataFile(randomStrings);
                 tempTime = clock() - tempTime;
@@ -245,12 +233,17 @@ void gui::menuDrawing()
                 consoleOutput += "[+] Data Written To File!\n";
 
             }
-            if (ImGui::Button("Write Keys File", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
-                writeKeyFile(orderOfKeys);
-                consoleOutput += "[+] Keys Written To File!\n";
-
+            if (ImGui::Button("Write Keys File", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
+                //optional require sort before writing key file (pointless for keys if no sorting)
+                if (isSorted) {
+                    writeKeyFile(orderOfKeys);
+                    consoleOutput += "[+] Keys Written To File!\n";
+				}
+                else {
+                    consoleOutput += "[!] Hashed Values Not Sorted By Keys!\n";
+                }
             }
-            if (ImGui::Button("Merge Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Merge Sort", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (isHashed) {
                     if (!isSorted) {
                         clock_t tempTime = clock();
@@ -290,7 +283,7 @@ void gui::menuDrawing()
 
 
             }
-            if (ImGui::Button("Quick Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Quick Sort", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (isHashed) {
 
                     if (!isSorted) {
@@ -330,7 +323,7 @@ void gui::menuDrawing()
                 }
 
             }
-            if (ImGui::Button("Shell Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Shell Sort", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (isHashed) {
 
                     if (!isSorted) {
@@ -368,7 +361,7 @@ void gui::menuDrawing()
 
                 }
             }
-            if (ImGui::Button("Heap Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Heap Sort", ImVec2(.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (isHashed) {
 
                     if (!isSorted) {
@@ -406,7 +399,7 @@ void gui::menuDrawing()
 
                 }
             }
-            if (ImGui::Button("Radix Sort", ImVec2(.9 * menuDimensions.x / 5, .4 * 3 * menuDimensions.y / 16))) {
+            if (ImGui::Button("Radix Sort", ImVec2(0.93 * menuDimensions.x / 5, .395 * 3 * menuDimensions.y / 16))) {
                 if (isHashed) {
 
                     if (!isSorted) {

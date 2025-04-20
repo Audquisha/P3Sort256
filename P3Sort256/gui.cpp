@@ -52,7 +52,7 @@ void gui::ApplyTheme() {
     style->GrabRounding = 4.f;
     style->PopupRounding = 4.f;
     style->FrameRounding = 4.f;
-    //->FramePadding = { 10.f,10.f };
+    //style->FramePadding = { 10.f,10.f };
     style->FrameBorderSize = 0.f;
 };
 
@@ -62,7 +62,7 @@ void gui::Render()
 
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE, wc.lpszClassName, L"ImGui", WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN)/1.5, GetSystemMetrics(SM_CYSCREEN)/1.5, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE, wc.lpszClassName, L"ImGui", WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), nullptr, nullptr, wc.hInstance, nullptr);
 
     SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 255, LWA_ALPHA);
   
