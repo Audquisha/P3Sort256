@@ -1,1 +1,3 @@
 Go to Properties -> VC++ Directories -> External Include Directories and change it to your username
+
+This project is designed to take in a data file (or randomly generate one) of tuples (of type (string name, string password)), hash them, generate a key vector with theses hashes of the numbers 0-63 in a random order, and then resort the hashed characters based on this key vector. Once done, the user is able to see the time each sorting algoirthm took and compare them. Afterwards the user can write the keys used for the sorting and the finished passwords to their respective files "data.txt" and "keys.txt".
